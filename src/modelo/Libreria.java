@@ -8,6 +8,12 @@ public class Libreria {
 		this.codigo = codigo;
 		this.direccion = direccion;
 	}
+	
+	public Libreria(String direccion) {
+		super();
+		this.direccion = direccion;
+	}
+
 	@Override
 	public String toString() {
 		return "Libreria [codigo=" + codigo + ", direccion=" + direccion + "]";
