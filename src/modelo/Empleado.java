@@ -18,6 +18,13 @@ public class Empleado {
 				+ dni + "]";
 	}
 
+	public Empleado(int codigoLibreria, String nombre, String dni) {
+		super();
+		this.codigoLibreria = codigoLibreria;
+		this.nombre = nombre;
+		this.dni = dni;
+	}
+
 	public int getCodigo() {
 		return codigo;
 	}

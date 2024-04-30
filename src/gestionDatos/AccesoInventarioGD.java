@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import modelo.ConfigBD;
 
-public class AccesoInventario {
+public class AccesoInventarioGD {
 	public static boolean HayReferenciasCruzadas(int codigoLibreria)
 			throws SQLException, ClassNotFoundException {
 		Connection conexion = null;

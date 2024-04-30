@@ -75,4 +75,23 @@ public class AccesoLibreliaGD {
 			ConfigBD.desconectar(conexion);
 		}
 	}
+	public static boolean existeLibreria (int cod) throws ClassNotFoundException, SQLException{
+		Connection conexion = null;
+		int numfilas=0;
+		try {
+			conexion = ConfigBD.conectarseABD();
+			String codigoSQL = "SELECT * FROM Libreria WHERE codigo = ? ";
+			PreparedStatement sentenciaPreparada = conexion.prepareStatement(codigoSQL);
+			
+			sentenciaPreparada.setInt(1, cod);
+			
+			ResultSet resultados = sentenciaPreparada.executeQuery();
+			if (resultados.next()) {
+				numfilas++;
+			}
+			return numfilas == 0;
+		} finally {
+			ConfigBD.desconectar(conexion);
+		}
+	}
 }
