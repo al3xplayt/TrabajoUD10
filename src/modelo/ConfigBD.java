@@ -22,7 +22,7 @@ public class ConfigBD {
 		return conexion;
 	}
 	public static void desconectar(Connection conexion) throws SQLException {
-		if (conexion != null && conexion.isClosed()) {
+		if (conexion != null && !conexion.isClosed()) {
 			conexion.close();
 		} 
 	}

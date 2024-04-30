@@ -11,6 +11,7 @@ public class Principal {
 		String direccion, nombre, dni;
 		int opcion = 0, codLib;
 		boolean datosValidos;
+		Empleado emple;
 		do {
 			try {
 				menu();
@@ -38,21 +39,25 @@ public class Principal {
 					}
 					break;
 				case 4:
-					boolean seguir;
 					nombre = Teclado.leerCadena("Nombre del empleado: ");
 					dni = Teclado.leerCadena("Dni del empleado: ");
-					do {
-						codLib = Teclado.leerEntero("Codigo de la libreria");
-						seguir = AccesoLibreliaGD.existeLibreria(codLib) ? true : false;
-					} while (!seguir);
-					Empleado emple = new Empleado(codLib, nombre, dni);
+					if ((emple = AccesoEmpleadoGD.consultarEmpleadoPorDni(dni)) != null) {
+						System.out.println("Ya existe un empleado con ese dni");
+						break;
+					}
+					codLib = Teclado.leerEntero("Codigo de la libreria");
+					if (AccesoLibreliaGD.consultarPorCodigoV2(codLib)==null) {
+						System.out.println("No existe una libreria con ese codigo");
+						break;
+					}
+					emple = new Empleado(codLib, nombre, dni);
 					AccesoEmpleadoGD.insertarEmpleado(emple);
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + opcion);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				e.printStackTrace();
 			}
 		} while (opcion != 0);
 	}

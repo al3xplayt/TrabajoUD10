@@ -29,22 +29,46 @@ public class AccesoEmpleadoGD {
 			ConfigBD.desconectar(conexion);
 		}
 	}
-	public static boolean existeEMpleadoConDni()
+	public static Empleado consultarEmpleadoPorDni(String dni) throws ClassNotFoundException, SQLException {
+		Connection conexion = null;
+		Empleado emple = null;
+		try {
+			conexion = ConfigBD.conectarseABD();
+			String codigoSQL = "SELECT Dni FROM Empleado where Dni = ?";
+			PreparedStatement sentencia = conexion.prepareStatement(codigoSQL);
+			sentencia.setString(1, dni);
+			ResultSet resultados = sentencia.executeQuery();
+			if(resultados.next()) {
+				int codigoEmpleado = resultados.getInt("Codigo");
+				String nombre = resultados.getString("Nombre");
+//				String Dni = resultados.getString("Dni");
+				int codLibreria  = resultados.getInt("codigo_libreria");
+				emple = new Empleado(codigoEmpleado,codLibreria, nombre, dni);
+			}
+			return emple;
+		} finally {
+			ConfigBD.desconectar(conexion);
+		}
+	}
 	public static void insertarEmpleado (Empleado empleado) throws ClassNotFoundException, SQLException {
 			Connection conexion = null;
+			System.out.println("MensajeV2");
 			try {
 				conexion = ConfigBD.conectarseABD();
-				String codigoSQL = "INSERT INTO Empleado (Nombre, Dni, codigo_libreria) values (?,?,?)";
+				String codigoSQL = "INSERT INTO Empleado (Nombre, Dni, codigo_libreria) VALUES (?,?,?)";
 				PreparedStatement sentencia = conexion.prepareStatement(codigoSQL);
 				String nombre = empleado.getNombre();
 				String dni = empleado.getDni();
-				int codLibrerira = empleado.getCodigo();
+				int codLibrerira = empleado.getCodigoLibreria();
 				sentencia.setString(1, nombre);
 				sentencia.setString(2, dni);
 				sentencia.setInt(3, codLibrerira);
-				int numfilas= sentencia.executeUpdate();
+				System.out.println("MensajeV1");
+				sentencia.executeUpdate();
+				System.out.println("MensajeV0");
 			} finally {
 				ConfigBD.desconectar(conexion);
+				System.out.println("mensajeV3");
 			}
 	}
 }
