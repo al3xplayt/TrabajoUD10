@@ -1,5 +1,6 @@
 package gestionDatos;
 
+import java.io.ObjectInputFilter.Config;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,5 +71,20 @@ public class AccesoEmpleadoGD {
 				ConfigBD.desconectar(conexion);
 				System.out.println("mensajeV3");
 			}
+	}
+	public static boolean eliminarEmpleadoPorCodigo (int codigo) throws ClassNotFoundException, SQLException {
+		int numFilas = 0;
+		Connection conexion = null;
+		try {
+			conexion = ConfigBD.conectarseABD();
+			String sentenciaSQL = "DELETE FROM Empleado WHERE Codigo = ? ";
+			PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
+			sentenciaPreparada.setInt(1, codigo);
+			numFilas = sentenciaPreparada.executeUpdate();
+		} finally {
+			ConfigBD.desconectar(conexion);
+		}
+		
+		return numFilas != 0;
 	}
 }

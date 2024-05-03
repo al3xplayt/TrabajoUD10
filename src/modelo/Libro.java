@@ -11,11 +11,17 @@ public class Libro {
 		Autor = autor;
 		Precio = precio;
 	}
-	public Libro(int codigo, String titulo, double precio) {
+	public Libro(String titulo, double precio) {
 		super();
-		Codigo = codigo;
 		Titulo = titulo;
 		Autor = "Anonimo";
+		Precio = precio;
+	}
+	
+	public Libro(String titulo, String autor, double precio) {
+		super();
+		Titulo = titulo;
+		Autor = autor;
 		Precio = precio;
 	}
 	@Override

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelo.ConfigBD;
 import modelo.Libreria;
@@ -90,6 +92,36 @@ public class AccesoLibreliaGD {
 				numfilas++;
 			}
 			return numfilas == 0;
+		} finally {
+			ConfigBD.desconectar(conexion);
+		}
+	}
+	public static String consultarLibreriasPorCantidadDeLibros () throws ClassNotFoundException, SQLException{
+		Connection conexion = null;
+		Libreria libreria;
+		int numFilas = 0;
+//		List <Libreria> listaADev = new ArrayList<>();
+		String mensaje="";
+		try {
+			conexion = ConfigBD.conectarseABD();
+			String sentenciaSQL = "SELECT l.Codigo, l.Direccion, sum(Cantidad) as Cantidad "
+					+ "from Libreria as l JOIN Inventario as i ON (l.Codigo = i.codigo_libreria) "
+					+ "GROUP BY i.codigo_libreria ORDER BY i.Cantidad DESC";
+			PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
+			ResultSet resultados  = sentenciaPreparada.executeQuery();
+			while (resultados.next()) {
+				int codigo = resultados.getInt("Codigo");
+				String direccion = resultados.getString("Direccion");
+				int Cantidad = resultados.getInt("Cantidad");
+				libreria = new Libreria(codigo,direccion);
+				mensaje += libreria.toString() + "con un total de "+Cantidad+" ejemplares"+"\n";
+				numFilas++;
+			}
+			if (numFilas == 0) {
+				return "No hay ejemplares";
+			}
+//			return listaADev;
+			return mensaje;
 		} finally {
 			ConfigBD.desconectar(conexion);
 		}
