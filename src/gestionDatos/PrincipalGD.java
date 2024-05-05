@@ -17,6 +17,7 @@ public class PrincipalGD {
 		Libreria libreria;
 		Libro libro;
 		List<Libro> listaLibros;
+		List<Empleado> listaEmple;
 		do {
 			try {
 				menu();
@@ -30,9 +31,9 @@ public class PrincipalGD {
 					AccesoLibreliaGD.introducirLibreia(libreria);
 					break;
 				case 2:
-					codLib = Teclado.leerEntero("¿Cod de la libreria?");
+					codLib = Teclado.leerNatural("¿Codigo de la libreria? ");
 					datosValidos = true;
-					if (AccesoEmpleadoGD.consultarEmpleadosPorCodLibreria(codLib)) {
+					if (AccesoEmpleadoGD.HayEmpleadosEnLaLibreria(codLib)) {
 						System.out.println("La libreria se ha eliminado");
 						datosValidos = false;
 					}
@@ -49,13 +50,13 @@ public class PrincipalGD {
 					}
 					break;
 				case 3:
-					codLib = Teclado.leerEntero("¿Código libreria? ");
+					codLib = Teclado.leerNatural("¿Código libreria? ");
 					libreria = AccesoLibreliaGD.consultarPorCodigoV2(codLib);
 					if (libreria == null) {
 						System.out.println("No existe ninguna libreria");
-					} else
+					} else {
 						System.out.println(libreria.toString());
-					System.out.println(3);
+					}
 					break;
 				case 4:
 					nombre = Teclado.leerCadena("Nombre del empleado: ");
@@ -64,7 +65,7 @@ public class PrincipalGD {
 						System.out.println("Ya existe un empleado con ese dni");
 						break;
 					}
-					codLib = Teclado.leerEntero("Codigo de la libreria");
+					codLib = Teclado.leerNatural("Codigo de la libreria");
 					if (AccesoLibreliaGD.consultarPorCodigoV2(codLib) == null) {
 						System.out.println("No existe una libreria con ese codigo");
 						break;
@@ -73,10 +74,16 @@ public class PrincipalGD {
 					AccesoEmpleadoGD.insertarEmpleado(emple);
 					break;
 				case 5:
-
+					codLib = Teclado.leerNatural("¿Codigo de la libreria? ");
+					listaEmple = AccesoEmpleadoGD.consultarEMpleadosPorCodLibreria(codLib);
+					if(listaEmple.isEmpty()) {
+						System.out.println("No hay ningún empleado");
+					} else {
+						AccesoEmpleadoGD.escribirListaEmpleado(listaEmple);
+					}
 					break;
 				case 6:
-					codigoEmpleado = Teclado.leerEntero("¿Codigo del empleado? ");
+					codigoEmpleado = Teclado.leerNatural("¿Codigo del empleado? ");
 					if (AccesoEmpleadoGD.eliminarEmpleadoPorCodigo(codigoEmpleado)) {
 						System.out.println("Se ha eliminado correctamente");
 					} else {
@@ -84,27 +91,31 @@ public class PrincipalGD {
 					}
 					break;
 				case 7:
-					codLibro = Teclado.leerEntero("¿Código del libro? ");
+					codLibro = Teclado.leerNatural("¿Código del libro? ");
 					libro = AccesoLibroGD.consultarPorCodigoLibro(codLibro);
 					String mensaje = libro == null ? "No existe ningun libro con este codigo" : libro.toString();
 					System.out.println(mensaje);
 					break;
 				case 8:
 					listaLibros = AccesoLibroGD.cosnultarLibroOrdPorAutor();
-					AccesoLibroGD.escribirLibros(listaLibros);
+					if(listaLibros.isEmpty()) {
+						System.out.println("No hay ningún libro");
+					} else {
+						AccesoLibroGD.escribirLibros(listaLibros);
+					}
 					break;
 				case 9:
 					titulo = Teclado.leerCadena("¿Nombre del libro? ");
 					precio = Teclado.leerReal("¿Precio libro? ");
 					autorConocido = Teclado.leerBooleano("¿Se conoce el autor? (true/false) ");
-					if(!autorConocido) {
+					if(autorConocido) {
 						autor=Teclado.leerCadena("¿Nombre autor? ");
 						libro = new Libro(titulo,autor, precio);
 					} else {
 						libro = new Libro(titulo,precio);
 					}
 					datosValidos = AccesoLibroGD.hayLibro(libro);
-					if (datosValidos) {
+					if (!datosValidos) {
 						AccesoLibroGD.insertarLibroSiempre(libro);
 						System.out.println("Se ha insertado el libro correctamente");
 					} else {
@@ -112,7 +123,7 @@ public class PrincipalGD {
 					}
 					break;
 				case 10:
-					codLibro = Teclado.leerEntero("¿COdigo del libro? ");
+					codLibro = Teclado.leerNatural("¿Código del libro? ");
 					datosValidos = AccesoInventarioGD.HayReferenciasCruzadasLibro(codLibro);
 					if (datosValidos) {
 						System.out.println("El libro aparece en el inventario");
@@ -130,9 +141,10 @@ public class PrincipalGD {
 				case 12:
 					codLib = Teclado.leerNatural("¿Codigo de la libreria? ");
 					codLibro = Teclado.leerNatural("¿Codigo del libro? ");
-					cantidad = Teclado.leerEntero("¿Cantidad de libros? ");
+					cantidad = Teclado.leerNatural("¿Cantidad de libros? ");
 					mensaje = AccesoInventarioGD.modificarCantidadLibro(codLibro, codLib, cantidad) ? 
 							"Se ha modificado correctamente" : "No se ha podido modificar";
+					System.out.println(mensaje);
 					break;
 				case 13:
 					datosValidos = true;
@@ -142,7 +154,7 @@ public class PrincipalGD {
 						System.out.println("El libro no existe");
 						datosValidos = false;
 					}
-					codLib = Teclado.leerNatural("¿COdigo de la libreria? ");
+					codLib = Teclado.leerNatural("¿Codigo de la libreria? ");
 					libreria = AccesoLibreliaGD.consultarPorCodigo(codLib);
 					if (libreria == null) {
 						System.out.println("La libreria no existe");
@@ -156,10 +168,15 @@ public class PrincipalGD {
 						cantidad=Teclado.leerNatural("¿Cantidad de libros a añadir? ");
 						mensaje = AccesoInventarioGD.AñadirLibroAInventario(codLibro, codLib, cantidad) ? 
 								"Se ha añadido correctamente" : "No se ha podido añadir";
+						System.out.println(mensaje);
 					}
 					break;
 				case 14:
 					System.out.println( AccesoLibreliaGD.consultarLibreriasPorCantidadDeLibros());
+					break;
+				case 15:
+					mensaje= AccesoLibreliaGD.consultarLibreriaPorTotasInvertido();
+					System.out.println(mensaje);
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + opcion);
@@ -172,22 +189,24 @@ public class PrincipalGD {
 
 	public static void menu() {
 		System.out.println("0) Salir");
-		System.out.println("1) Insetrtar nueva libreria");
+		System.out.println("1) Insertar nueva libreria");
 		System.out.println("2) Eliminar librería por codigo de librería");
 		System.out.println("3) Consultar librerias / por codigo.");
-		System.out.println("4) Inserat nuevo empleado");
-		System.out.println("5) Cousltar empleados de una librería");
+		System.out.println("4) Insertar nuevo empleado");
+		System.out.println("5) Consultar empleados de una librería");
 		System.out.println("6) Eliminar un empleado por código");
 		System.out.println("7) Consultar un libro por código");
 		System.out.println("8) Consultar los libros ordenados por autor");
 		System.out.println("9) Insertar un libro");
 		System.out.println("10) Eliminar un libro por código");
 		System.out.println("11) Consultar número total de existencias de un libro");
-		System.out.println("12) Modificar la cantidad de libros de una determinada librería por\r\n"
-				+ "código de libro y de librería.");
-		System.out.println("13) Añadir un nuevo libro ya existente a una librería junto a la cantidad\r\n"
-				+ "de libros.");
-		System.out.println("14) Consultar las librerías ordenadas por número de libros de menor\r\n"
-				+ "número a mayor.");
+		System.out.println("12) Modificar la cantidad de libros de una determinada librería por"
+				+ " código de libro y de librería.");
+		System.out.println("13) Añadir un nuevo libro ya existente a una librería junto a la cantidad"
+				+ " de libros.");
+		System.out.println("14) Consultar las librerías ordenadas por número de libros de menor"
+				+ " número a mayor.");
+		System.out.println("15)  Consultar las librerías ordenadas por el dinero que tienen"
+				+ " invertido en libros de mayor a menor.");
 	}
 }

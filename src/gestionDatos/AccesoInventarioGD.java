@@ -69,7 +69,7 @@ public class AccesoInventarioGD {
 		int numfilas = 0;
 		try {
 			conexion = ConfigBD.conectarseABD();
-			String sentenciaSQL = "UPDATE FROM Inventario SET Cantidad = ? "
+			String sentenciaSQL = "UPDATE Inventario SET Cantidad = ? "
 					+ "WHERE Codigo_libreria = ? "
 					+ "AND Codigo_Libro = ?";
 			PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
@@ -103,7 +103,7 @@ public class AccesoInventarioGD {
 		int numfilas = 0;
 		try {
 			conexion = ConfigBD.conectarseABD();
-			String sentenciaSQL = "SELECT * FROM Invetario WHERE Codigo_Libreria = ? AND Codigo_Libro = ? ";
+			String sentenciaSQL = "SELECT * FROM Inventario WHERE Codigo_Libreria = ? AND Codigo_Libro = ? ";
 			PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
 			sentenciaPreparada.setInt(1, CodigoLibreria);
 			sentenciaPreparada.setInt(2, codigoLibro);

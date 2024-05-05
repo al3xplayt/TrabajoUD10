@@ -58,16 +58,9 @@ public class AccesoLibroGD {
 	}
 
 	public static void escribirLibros(List<Libro> listaAMostrar) {
-		if (listaAMostrar.isEmpty()) {
-			System.out.println("La lista esta vacía");
-
-		} else {
-			String cadena = "";
 			for (Libro librito : listaAMostrar) {
-				cadena += librito.toString()+"\n";
+				System.out.println(librito.toString());;
 			}
-			System.out.println(cadena);
-		}
 	}
 	public static void insertarLibroSiempre (Libro libroAInsertar) throws ClassNotFoundException, SQLException {
 		Connection conexion = null;
@@ -85,7 +78,6 @@ public class AccesoLibroGD {
 	}
 	public static boolean hayLibro(Libro libro) throws SQLException, ClassNotFoundException {
 		Connection conexion = null;
-		int numFilas = 0;
 		try {
 			conexion = ConfigBD.conectarseABD();
 			String codigoSQL = "SELECT * FROM Libro WHERE Titulo = ? AND Autor = ?";
@@ -95,11 +87,13 @@ public class AccesoLibroGD {
 			ResultSet resultados = sentenciaPreparada.executeQuery();
 			if (resultados.next()) {
 				return true;
+			} else {
+				return false;
 			}
 		} finally {
 			ConfigBD.desconectar(conexion);
 		}
-		return false;
+
 	}
 	public static boolean EliminarLibro (int codigoLibro) throws ClassNotFoundException, SQLException {
 		Connection conexion = null;
