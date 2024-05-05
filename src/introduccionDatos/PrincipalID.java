@@ -16,7 +16,7 @@ public class PrincipalID {
 //	Segundo - Empleados
 //	Tercero - Libro
 //	Cuarto - Inventario
-	public static void main(String[] args) {
+	public static void principalIDatos() {
 		int opcion=0;
 		do {
 			try {

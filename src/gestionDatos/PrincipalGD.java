@@ -8,7 +8,7 @@ import modelo.Libreria;
 import modelo.Libro;
 
 public class PrincipalGD {
-	public static void main(String[] args) {
+	public static void principalGD() {
 		String direccion, nombre, dni, autor, titulo;
 		double precio = 0;
 		int opcion = 0, codLib, codigoEmpleado, codLibro, cantidad;
