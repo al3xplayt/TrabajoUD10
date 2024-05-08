@@ -21,29 +21,29 @@ public class PrincipalGD {
 		do {
 			try {
 				menu();
-				opcion = Teclado.leerEntero("¿Opcion? ");
+				opcion = Teclado.leerEntero("¿Opción? ");
 				switch (opcion) {
 				case 0:
 					break;
 				case 1:
 					direccion = Teclado.leerCadena("¿Dirección de la libreria? ");
 					libreria = new Libreria(direccion);
-					AccesoLibreliaGD.introducirLibreia(libreria);
+					AccesoLibreriaGD.introducirLibreia(libreria);
 					break;
 				case 2:
-					codLib = Teclado.leerNatural("¿Codigo de la libreria? ");
+					codLib = Teclado.leerNatural("¿Código de la libreria? ");
 					datosValidos = true;
 					if (AccesoEmpleadoGD.HayEmpleadosEnLaLibreria(codLib)) {
-						System.out.println("La libreria se ha eliminado");
+						System.out.println("La libreria tiene empleados");
 						datosValidos = false;
 					}
 
 					if (AccesoInventarioGD.HayReferenciasCruzadas(codLib)) {
-						System.out.println("La");
+						System.out.println("La libreria contiene libros");
 						datosValidos = false;
 					}
 					if (datosValidos) {
-						String mensaje = AccesoLibreliaGD.eliminarLibreriaPorCodigo(codLib)
+						String mensaje = AccesoLibreriaGD.eliminarLibreriaPorCodigo(codLib)
 								? "Se ha logrado eliminar la libreria"
 								: "La libreria no existia";
 						System.out.println(mensaje);
@@ -51,7 +51,7 @@ public class PrincipalGD {
 					break;
 				case 3:
 					codLib = Teclado.leerNatural("¿Código libreria? ");
-					libreria = AccesoLibreliaGD.consultarPorCodigoV2(codLib);
+					libreria = AccesoLibreriaGD.consultarPorCodigoV2(codLib);
 					if (libreria == null) {
 						System.out.println("No existe ninguna libreria");
 					} else {
@@ -59,19 +59,24 @@ public class PrincipalGD {
 					}
 					break;
 				case 4:
+					datosValidos = true;
 					nombre = Teclado.leerCadena("Nombre del empleado: ");
 					dni = Teclado.leerCadena("Dni del empleado: ");
 					if ((emple = AccesoEmpleadoGD.consultarEmpleadoPorDni(dni)) != null) {
 						System.out.println("Ya existe un empleado con ese dni");
+						datosValidos = false;
 						break;
 					}
-					codLib = Teclado.leerNatural("Codigo de la libreria");
-					if (AccesoLibreliaGD.consultarPorCodigoV2(codLib) == null) {
+					codLib = Teclado.leerNatural("Codigo de la libreria: ");
+					if (AccesoLibreriaGD.consultarPorCodigoV2(codLib) == null) {
 						System.out.println("No existe una libreria con ese codigo");
+						datosValidos = false;
 						break;
 					}
-					emple = new Empleado(codLib, nombre, dni);
-					AccesoEmpleadoGD.insertarEmpleado(emple);
+					if(datosValidos){
+						emple = new Empleado(codLib, nombre, dni);
+						AccesoEmpleadoGD.insertarEmpleado(emple);
+					}
 					break;
 				case 5:
 					codLib = Teclado.leerNatural("¿Codigo de la libreria? ");
@@ -155,7 +160,7 @@ public class PrincipalGD {
 						datosValidos = false;
 					}
 					codLib = Teclado.leerNatural("¿Codigo de la libreria? ");
-					libreria = AccesoLibreliaGD.consultarPorCodigo(codLib);
+					libreria = AccesoLibreriaGD.consultarPorCodigo(codLib);
 					if (libreria == null) {
 						System.out.println("La libreria no existe");
 						datosValidos = false;
@@ -172,10 +177,10 @@ public class PrincipalGD {
 					}
 					break;
 				case 14:
-					System.out.println( AccesoLibreliaGD.consultarLibreriasPorCantidadDeLibros());
+					System.out.println( AccesoLibreriaGD.consultarLibreriasPorCantidadDeLibros());
 					break;
 				case 15:
-					mensaje= AccesoLibreliaGD.consultarLibreriaPorTotasInvertido();
+					mensaje= AccesoLibreriaGD.consultarLibreriaPorTotasInvertido();
 					System.out.println(mensaje);
 					break;
 				default:

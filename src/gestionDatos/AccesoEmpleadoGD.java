@@ -36,14 +36,13 @@ public class AccesoEmpleadoGD {
 		Empleado emple = null;
 		try {
 			conexion = ConfigBD.conectarseABD();
-			String codigoSQL = "SELECT Dni FROM Empleado where Dni = ?";
+			String codigoSQL = "SELECT * FROM Empleado where Dni = ?";
 			PreparedStatement sentencia = conexion.prepareStatement(codigoSQL);
 			sentencia.setString(1, dni);
 			ResultSet resultados = sentencia.executeQuery();
 			if (resultados.next()) {
 				int codigoEmpleado = resultados.getInt("Codigo");
 				String nombre = resultados.getString("Nombre");
-//				String Dni = resultados.getString("Dni");
 				int codLibreria = resultados.getInt("codigo_libreria");
 				emple = new Empleado(codigoEmpleado, codLibreria, nombre, dni);
 			}
@@ -55,7 +54,6 @@ public class AccesoEmpleadoGD {
 
 	public static void insertarEmpleado(Empleado empleado) throws ClassNotFoundException, SQLException {
 		Connection conexion = null;
-		System.out.println("MensajeV2");
 		try {
 			conexion = ConfigBD.conectarseABD();
 			String codigoSQL = "INSERT INTO Empleado (Nombre, Dni, codigo_libreria) VALUES (?,?,?)";
